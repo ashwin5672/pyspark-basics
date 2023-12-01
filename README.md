@@ -145,46 +145,66 @@ df = df.join(other_table, df.id == other_table.person_id, 'left')
 
 df = df.join(other_table, ['first_name', 'last_name'], 'left')
 
-**Column Operations**
+# Column Operations**
 
-# Add a new static column
+**Add a new static column**
+
+
 df = df.withColumn('status', F.lit('PASS'))
 
-# Construct a new dynamic column
+**Construct a new dynamic column**
+
+
 df = df.withColumn('full_name', F.when(
     (df.fname.isNotNull() & df.lname.isNotNull()), F.concat(df.fname, df.lname)
 ).otherwise(F.lit('N/A'))
 
-# Pick which columns to keep, optionally rename some
+**Pick which columns to keep, optionally rename some**
+
+
 df = df.select(
     'name',
     'age',
     F.col('dob').alias('date_of_birth'),
 )
 
-# Remove columns
+**Remove columns**
+
+
 df = df.drop('mod_dt', 'mod_username')
 
-# Rename a column
+**Rename a column**
+
+
 df = df.withColumnRenamed('dob', 'date_of_birth')
 
-# Keep all the columns which also occur in another dataset
+**Keep all the columns which also occur in another dataset**
+
+
 df = df.select(*(F.col(c) for c in df2.columns))
 
-# Batch Rename/Clean Columns
+**Batch Rename/Clean Columns**
+
+
 for col in df.columns:
     df = df.withColumnRenamed(col, col.lower().replace(' ', '_').replace('-', '_'))
 Casting & Coalescing Null Values & Duplicates
-# Cast a column to a different type
+
+
+**Cast a column to a different type**
+
+
 df = df.withColumn('price', df.price.cast(T.DoubleType()))
 
-# Replace all nulls with a specific value
+## Replace all nulls with a specific value
+
 df = df.fillna({
     'first_name': 'Tom',
     'age': 0,
 })
 
-# Take the first value that is not null
+## Take the first value that is not null
+
 df = df.withColumn('last_name', F.coalesce(df.last_name, df.surname, F.lit('N/A')))
 
 # Drop duplicate rows in a dataset (distinct)
