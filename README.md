@@ -30,46 +30,71 @@ spark = SparkSession.builder.getOrCreate()
 I/O options: https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/io.html
 df = spark.read.csv('/path/to/your/input/file')
 Basics
+
 **Show a preview**
 
 df.show()
 
 **Show preview of first / last n rows**
+
+
 df.head(5)
 df.tail(5)
 
 **Show preview as JSON (WARNING: in-memory)**
+
+
 df = df.limit(10) # optional
 print(json.dumps([row.asDict(recursive=True) for row in df.collect()], indent=2))
 
 **Limit actual DataFrame to n rows (non-deterministic)**
+
+
 df = df.limit(5)
 
 **Get columns**
+
+
 df.columns
 
 **Get columns + column types**
+
+
 df.dtypes
 
 **Get schema**
+
+
 df.schema
 
 **Get row count**
+
+
 df.count()
 
 **Get column count**
+
+
 len(df.columns)
 
 **Write output to disk**
+
+
 df.write.csv('/path/to/your/output/file')
 
 **Get results (WARNING: in-memory) as list of PySpark Rows**
+
+
 df = df.collect()
 
 **Get results (WARNING: in-memory) as list of Python dicts**
+
+
 dicts = [row.asDict(recursive=True) for row in df.collect()]
 
 **Convert (WARNING: in-memory) to Pandas DataFrame**
+
+
 df = df.toPandas()
 
 
@@ -83,31 +108,46 @@ df = df.toPandas()
 from pyspark.sql import functions as F, types as T
 
 ## Filtering
+
 **Filter on equals condition**
 
 
 df = df.filter(df.is_adult == 'Y')
 
 **Filter on >, <, >=, <= condition**
+
 df = df.filter(df.age > 25)
 
-# Multiple conditions require parentheses around each condition
+**Multiple conditions require parentheses around each condition**
+
+
 df = df.filter((df.age > 25) & (df.is_adult == 'Y'))
 
-# Compare against a list of allowed values
+**Compare against a list of allowed values**
+
+
 df = df.filter(col('first_name').isin([3, 4, 7]))
 
-# Sort results
+**Sort results**
+
+
 df = df.orderBy(df.age.asc()))
 df = df.orderBy(df.age.desc()))
-Joins
-# Left join in another dataset
+## Joins
+
+**Left join in another dataset**
+
+
 df = df.join(person_lookup_table, 'person_id', 'left')
 
-# Match on different columns in left & right datasets
+**Match on different columns in left & right datasets**
+
+
 df = df.join(other_table, df.id == other_table.person_id, 'left')
 
-# Match on multiple columns
+**Match on multiple columns**
+
+
 df = df.join(other_table, ['first_name', 'last_name'], 'left')
 
 **Column Operations**
