@@ -31,6 +31,7 @@ I/O options: https://spark.apache.org/docs/latest/api/python/reference/pyspark.s
 df = spark.read.csv('/path/to/your/input/file')
 Basics
 **Show a preview**
+
 df.show()
 
 **Show preview of first / last n rows**
