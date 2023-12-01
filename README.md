@@ -84,6 +84,8 @@ from pyspark.sql import functions as F, types as T
 
 ## Filtering
 **Filter on equals condition**
+
+
 df = df.filter(df.is_adult == 'Y')
 
 **Filter on >, <, >=, <= condition**
