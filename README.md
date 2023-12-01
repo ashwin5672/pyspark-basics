@@ -145,7 +145,9 @@ df = df.select(*(F.col(c) for c in df2.columns))
 # Batch Rename/Clean Columns
 for col in df.columns:
     df = df.withColumnRenamed(col, col.lower().replace(' ', '_').replace('-', '_'))
-Casting & Coalescing Null Values & Duplicates
+```
+## Casting & Coalescing Null Values & Duplicates
+```
 # Cast a column to a different type
 df = df.withColumn('price', df.price.cast(T.DoubleType()))
 
@@ -170,8 +172,10 @@ df = df.replace({"": None}, subset=["name"])
 
 # Convert Python/PySpark/NumPy NaN operator to null
 df = df.replace(float("nan"), None)
-String Operations
-String Filters
+```
+## String Operations
+### String Filters
+```
 # Contains - col.contains(string)
 df = df.filter(df.name.contains('o'))
 
@@ -242,7 +246,9 @@ df = df.withColumn('least', F.least('subtotal', 'total'))
 
 # Select largest value out of multiple columns – F.greatest(*cols)
 df = df.withColumn('greatest', F.greatest('subtotal', 'total'))
-Date & Timestamp Operations
+```
+## Date & Timestamp Operations
+```
 # Add a column with the current date
 df = df.withColumn('current_date', F.current_date())
 
@@ -278,7 +284,10 @@ df = df.filter(
     (F.col('date_of_birth') >= F.lit('2017-05-10')) &
     (F.col('date_of_birth') <= F.lit('2018-07-21'))
 )
-Array Operations
+```
+
+# Array Operations
+```
 # Column Array - F.array(*cols)
 df = df.withColumn('full_name', F.array('fname', 'lname'))
 
@@ -302,13 +311,18 @@ df = df.withColumn('elem_ids', F.transform(F.col('my_array'), lambda x: x.getFie
 
 # Return a row per array element – F.explode(col)
 df = df.select(F.explode('my_array'))
-Struct Operations
+```
+
+## Struct Operations
+```
 # Make a new Struct column (similar to Python's `dict()`) – F.struct(*cols)
 df = df.withColumn('my_struct', F.struct(F.col('col_a'), F.col('col_b')))
 
 # Get item from struct by key – col.getField(str)
 df = df.withColumn('col_a', F.col('my_struct').getField('col_a'))
-Aggregation Operations
+```
+### Aggregation Operations
+```
 # Row Count:                F.count()
 # Sum of Rows in Group:     F.sum(*cols)
 # Mean of Rows in Group:    F.mean(*cols)
@@ -328,11 +342,15 @@ window = W.partitionBy("first_name", "last_name").orderBy(F.desc("date"))
 df = df.withColumn("row_number", F.row_number().over(window))
 df = df.filter(F.col("row_number") == 1)
 df = df.drop("row_number")
-Advanced Operations
-Repartitioning
+```
+## Advanced Operations
+### Repartitioning
+```
 # Repartition – df.repartition(num_output_partitions)
 df = df.repartition(1)
-UDFs (User Defined Functions
+```
+## UDFs (User Defined Functions
+```
 # Multiply each row's age column by two
 times_two_udf = F.udf(lambda x: x * 2)
 df = df.withColumn('age', times_two_udf(df.age))
@@ -375,3 +393,4 @@ def lookup_and_replace(df1, df2, df1_key, df2_key, df2_value):
         .drop(df2_key)
         .drop(df2_value)
     )
+```
