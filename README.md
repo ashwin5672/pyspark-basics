@@ -30,60 +30,62 @@ spark = SparkSession.builder.getOrCreate()
 I/O options: https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/io.html
 df = spark.read.csv('/path/to/your/input/file')
 Basics
-# Show a preview
+**Show a preview**
 df.show()
 
-# Show preview of first / last n rows
+**Show preview of first / last n rows**
 df.head(5)
 df.tail(5)
 
-# Show preview as JSON (WARNING: in-memory)
+**Show preview as JSON (WARNING: in-memory)**
 df = df.limit(10) # optional
 print(json.dumps([row.asDict(recursive=True) for row in df.collect()], indent=2))
 
-# Limit actual DataFrame to n rows (non-deterministic)
+**Limit actual DataFrame to n rows (non-deterministic)**
 df = df.limit(5)
 
-# Get columns
+**Get columns**
 df.columns
 
-# Get columns + column types
+**Get columns + column types**
 df.dtypes
 
-# Get schema
+**Get schema**
 df.schema
 
-# Get row count
+**Get row count**
 df.count()
 
-# Get column count
+**Get column count**
 len(df.columns)
 
-# Write output to disk
+**Write output to disk**
 df.write.csv('/path/to/your/output/file')
 
-# Get results (WARNING: in-memory) as list of PySpark Rows
+**Get results (WARNING: in-memory) as list of PySpark Rows**
 df = df.collect()
 
-# Get results (WARNING: in-memory) as list of Python dicts
+**Get results (WARNING: in-memory) as list of Python dicts**
 dicts = [row.asDict(recursive=True) for row in df.collect()]
 
-# Convert (WARNING: in-memory) to Pandas DataFrame
+**Convert (WARNING: in-memory) to Pandas DataFrame**
 df = df.toPandas()
 
 
-**Common Patterns**
+## Common Patterns
 
 
-# Importing Functions & Types
+**Importing Functions & Types**
 
-# Easily reference these as F.my_function() and T.my_type() below
+**Easily reference these as F.my_function() and T.my_type() below**
+
 from pyspark.sql import functions as F, types as T
-Filtering
-# Filter on equals condition
+
+## Filtering
+**Filter on equals condition**
 df = df.filter(df.is_adult == 'Y')
 
-# Filter on >, <, >=, <= condition
+**Filter on >, <, >=, <= condition**
 df = df.filter(df.age > 25)
 
 # Multiple conditions require parentheses around each condition
@@ -333,7 +335,7 @@ df = df.repartition(1)
 
 **UDFs (User Defined Functions**
 
-# Multiply each row's age column by two
+**Multiply each row's age column by two**
 times_two_udf = F.udf(lambda x: x * 2)
 df = df.withColumn('age', times_two_udf(df.age))
 
