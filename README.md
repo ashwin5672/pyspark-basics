@@ -22,7 +22,7 @@ A quick reference guide to the most commonly used patterns and functions in PySp
 - [Repartitioning](#repartitioning)
 
 ---
-
+```
 df = spark.read.csv('/path/to/your/input/file')
 Basics
 
@@ -91,7 +91,7 @@ dicts = [row.asDict(recursive=True) for row in df.collect()]
 
 
 df = df.toPandas()
-
+```
 
 ## Common Patterns
 
