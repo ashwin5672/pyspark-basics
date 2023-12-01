@@ -38,6 +38,7 @@ spark = SparkSession.builder.getOrCreate()
 df = spark.read.csv('/path/to/your/input/file')
 ```
 # Basics
+```
 # Show a preview
 df.show()
 
@@ -78,11 +79,16 @@ dicts = [row.asDict(recursive=True) for row in df.collect()]
 
 # Convert (WARNING: in-memory) to Pandas DataFrame
 df = df.toPandas()
-Common Patterns
-Importing Functions & Types
+```
+
+## Common Patterns
+### Importing Functions & Types
+```
 # Easily reference these as F.my_function() and T.my_type() below
 from pyspark.sql import functions as F, types as T
-Filtering
+```
+## Filtering
+```
 # Filter on equals condition
 df = df.filter(df.is_adult == 'Y')
 
@@ -98,7 +104,9 @@ df = df.filter(col('first_name').isin([3, 4, 7]))
 # Sort results
 df = df.orderBy(df.age.asc()))
 df = df.orderBy(df.age.desc()))
-Joins
+```
+## Joins
+```
 # Left join in another dataset
 df = df.join(person_lookup_table, 'person_id', 'left')
 
@@ -107,7 +115,9 @@ df = df.join(other_table, df.id == other_table.person_id, 'left')
 
 # Match on multiple columns
 df = df.join(other_table, ['first_name', 'last_name'], 'left')
-Column Operations
+```
+## Column Operations
+```
 # Add a new static column
 df = df.withColumn('status', F.lit('PASS'))
 
